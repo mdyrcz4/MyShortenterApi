@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using MyShortenterApi.Behaviours;
+using MyShortenterApi.Repositories;
+using MyShortenterApi.Services;
+using System;
 
 namespace MyShortenterApi
 {
@@ -26,21 +24,50 @@ namespace MyShortenterApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddBehaviours();
+            services.AddServices();
+            services.AddRepositories();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "MyShortener API",
+                    Description = "A simple url shortener API",
+                    TermsOfService = new Uri("https://github.com/mdyrcz4"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Marcin Dyrcz",
+                        Email = string.Empty,
+                        Url = new Uri("https://github.com/mdyrcz4"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://github.com/mdyrcz4"),
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
+                app.UseSwagger();
                 app.UseDeveloperExceptionPage();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
