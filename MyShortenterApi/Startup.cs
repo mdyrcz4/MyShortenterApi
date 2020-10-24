@@ -73,10 +73,12 @@ namespace MyShortenterApi
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 });
             }
-            app.UseCors("CorsPolicy");
+            
             app.UseHttpsRedirection();
 
             app.UseRouting(); 
+            
+            app.UseCors("CorsPolicy");
             
             app.UseEndpoints(endpoints =>
             {
