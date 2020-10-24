@@ -67,7 +67,7 @@ namespace MyShortenterApi
                 });
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
