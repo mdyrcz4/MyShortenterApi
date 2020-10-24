@@ -25,7 +25,7 @@ namespace MyShortenterApi
         {
             services.AddCors(options =>
             options.AddPolicy("EnableCors", builder =>
-                builder.SetIsOriginAllowed(origin => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
+                builder.WithOrigins("https://my-shortener-client.herokuapp.com").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
             
             services.AddControllers();
             services.AddBehaviours();
