@@ -24,8 +24,13 @@ namespace MyShortenterApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options =>
-            options.AddPolicy("EnableCors", builder =>
-                builder.WithOrigins("https://my-shortener-client.herokuapp.com").AllowAnyMethod().AllowAnyHeader().AllowCredentials()));
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
             
             services.AddControllers();
             services.AddBehaviours();
@@ -73,11 +78,11 @@ namespace MyShortenterApi
 
             app.UseRouting();
 
-            app.UseCors("EnableCors");
+            app.UseCors("CorsPolicy");
             
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers().RequireCors("EnableCors");
+                endpoints.MapControllers();
             });
         }
     }
