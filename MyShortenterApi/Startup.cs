@@ -23,13 +23,14 @@ namespace MyShortenterApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
+            services.AddCors(config =>
             {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+                config.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+                });
             });
             
             services.AddControllers();
@@ -76,9 +77,9 @@ namespace MyShortenterApi
             
             app.UseHttpsRedirection();
 
-            app.UseRouting(); 
+            app.UseRouting();
             
-            app.UseCors("CorsPolicy");
+            app.UseCors();
             
             app.UseEndpoints(endpoints =>
             {
