@@ -17,7 +17,7 @@ namespace MyShortenterApi.Repositories
                 var redisEndpoint = Environment.GetEnvironmentVariable("REDISCLOUD_URL");
                 var redisPassword = Environment.GetEnvironmentVariable("REDIS_PASSWORD");
 
-                services.AddSingleton(ConnectionMultiplexer.Connect($"{redisEndpoint},{redisPassword}"));
+                services.AddSingleton(ConnectionMultiplexer.Connect($"{redisEndpoint},password={redisPassword}"));
                 services.AddTransient<IRepository, RedisRepository>();
             }
         }
